@@ -3,43 +3,65 @@
 
 int main(){
 
-    char palavra[50], descobrir[50], letra;
+    char palavra[50], descobrir[50], letra, resp;
     int chances = 6, acertos = 0, tamanho = 0, i = 0;
-    bool verify;
+    bool verify = false;
     
-    std::cout << "Peça para seu amigo virar de costas e digite a palavra:  ";
-    std::cin >> palavra;
+    
+    
+    do
+    {
+        system("cls");
 
-    system("cls");
+        std::cout << "Peca para seu amigo virar de costas e digite a palavra:  ";
+        std::cin >> palavra;
 
-    for (i = 0; palavra[i] != '\0'; i++) {
-        descobrir[i] = '-';
-        tamanho++;
-    }
+        tamanho = 0;
+        acertos = 0;
+        chances = 6;
 
-    do {
-        std::cout << "Chances Restantes: " << chances;
-        std::cout << "\n\nPALAVRA A SER ADIVINHADA:   "; 
-        for (int j = 0; j < tamanho; j++) {
-            std::cout << descobrir[j];
+        system("cls");
+
+        for (i = 0; palavra[i] != '\0'; i++) {
+            descobrir[i] = '-';
+            tamanho++;
         }
-        std::cout << "\n\nLetra para tentar:  ";
-        std::cin >> letra;
-        for (int j = 0; j < tamanho; j++) {
-            if (letra == palavra[j]) {
-                descobrir[j] = palavra[j];
-                verify = true;
-            } else {
-                verify = false;
+
+        descobrir[tamanho] = '\0';
+        
+        do {
+            verify = false;
+            std::cout << "Chances Restantes: " << chances;
+            std::cout << "\n\nPALAVRA A SER ADIVINHADA:   "; 
+            for (int j = 0; j < tamanho; j++) {
+                std::cout << descobrir[j];
             }
-        }
-        if (verify) {
-            acertos++;
+            std::cout << "\n\nLetra para tentar:  ";
+            std::cin >> letra;
+            for (int j = 0; j < tamanho; j++) {
+                if (letra == palavra[j] && descobrir[j] == '-') {
+                    descobrir[j] = letra;
+                    acertos++;
+                    verify = true;
+                }
+            }
+            if (!verify) {
+                chances--;
+            }
+
+            system("cls");
+
+        } while (chances > 0 && acertos < tamanho);
+        
+        if (chances == 0) {
+            std::cout << "Fim de jogo! A palavra era " << palavra << std::endl;
         } else {
-            chances--;
+            std::cout << "Parabens! Voce descobriu a palavra: " << palavra << std::endl;
         }
-    } while (!(acertos == tamanho || chances == 0));
-    
+
+        std::cout << "Deseja jogar novamente? ";
+        std::cin >> resp;
+    } while (resp == 'S' || resp == 's');
     
 
     return 0;
